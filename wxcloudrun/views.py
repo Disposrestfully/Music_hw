@@ -14,10 +14,12 @@ def index():
     """
     return render_template('index.html')
 
-@app.route('/process', methods=['POST'])
+@app.route('/api/process', methods=['POST'])
 def process():
     params = request.get_json()
     name = params['name']
+    if 'name' not in params:
+        return make_err_response('缺少name参数')
     ball = query_ballbyname(name)
     if ball is None:
         ball = Balls()
@@ -29,11 +31,11 @@ def process():
         update_ballbyname(ball)
     return make_succ_empty_response()
 
-@app.route('/read', methods=['GET'])
+@app.route('/api/read', methods=['GET'])
 def read():
     return jsonify(get_allballs())
 
-@app.route('/write', methods=['POST'])
+@app.route('/api/write', methods=['POST'])
 def write():
     params = request.get_json()
     text_list = params['text']
