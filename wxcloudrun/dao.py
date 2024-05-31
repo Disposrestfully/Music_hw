@@ -35,11 +35,10 @@ def update_ballbyname(ball):
 
 def get_allballs():
     balls = Balls.query.all()
-    try:
-        return [ball.to_dict() for ball in balls]
-    except OperationalError as e:
-        logger.info("get_allballs errorMsg= {} ".format(e))
-        return None
+    res = []
+    for ball in balls:
+        res.append({"text": ball.text, "renew": ball.renew})
+    return res
 
 def query_counterbyid(id):
     """
