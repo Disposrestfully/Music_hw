@@ -34,8 +34,9 @@ def update_ballbyname(ball):
         logger.info("update_counterbyid errorMsg= {} ".format(e))
 
 def get_allballs():
+    balls = Balls.query.all()
     try:
-        return Balls.query.all()
+        return [ball.to_dict() for ball in balls]
     except OperationalError as e:
         logger.info("get_allballs errorMsg= {} ".format(e))
         return None
