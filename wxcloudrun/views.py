@@ -23,11 +23,11 @@ def process():
     ball = query_ballbyname(text)
     if ball is None:
         ball = Balls()
-        ball.renew = 0
+        ball.renew = False
         ball.text = text
         insert_ball(ball)
     else:
-        ball.renew = 1
+        ball.renew = True
         update_ballbyname(ball)
     return make_succ_empty_response()
 
@@ -42,7 +42,7 @@ def write():
     for input_text in text_list:
         ball = query_ballbyname(input_text)
         if ball != None:
-            ball.renew = 0
+            ball.renew = False
             update_ballbyname(ball)
     return jsonify({'message': 'success'})
 
