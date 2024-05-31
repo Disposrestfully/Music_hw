@@ -13,3 +13,9 @@ class Counters(db.Model):
     count = db.Column(db.Integer, default=1)
     created_at = db.Column('createdAt', db.TIMESTAMP, nullable=False, default=datetime.now())
     updated_at = db.Column('updatedAt', db.TIMESTAMP, nullable=False, default=datetime.now())
+
+
+class Balls(db.Model):
+    __tablename__ = 'Balls'
+    renew = db.Column(db.Integer, primary_key=True)
+    name = db.Column(db.Text)

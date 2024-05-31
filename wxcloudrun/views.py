@@ -1,8 +1,9 @@
 from datetime import datetime
-from flask import render_template, request
+from flask import render_template, request, jsonify
 from run import app
 from wxcloudrun.dao import delete_counterbyid, query_counterbyid, insert_counter, update_counterbyid
-from wxcloudrun.model import Counters
+from wxcloudrun.dao import query_ballbyname, insert_ball, update_ballbyname, get_allballs
+from wxcloudrun.model import Counters, Balls
 from wxcloudrun.response import make_succ_empty_response, make_succ_response, make_err_response
 
 
@@ -12,6 +13,36 @@ def index():
     :return: 返回index页面
     """
     return render_template('index.html')
+
+@app.route('/process', methods=['POST'])
+def process():
+    params = request.get_json()
+    name = params['name']
+    ball = query_ballbyname(name)
+    if ball is None:
+        ball = Balls()
+        ball.renew = 0
+        ball.name = name
+        insert_ball(ball)
+    else:
+        ball.renew = 1
+        update_ballbyname(ball)
+    return make_succ_empty_response()
+
+@app.route('/read', methods=['GET'])
+def read():
+    return jsonify(get_allballs())
+
+@app.route('/write', methods=['POST'])
+def write():
+    params = request.get_json()
+    text_list = params['text']
+    for input_text in text_list:
+        ball = query_ballbyname(input_text)
+        if ball != None:
+            ball.renew = 0
+            update_ballbyname(ball)
+    return jsonify({'message': 'success'})
 
 
 @app.route('/api/count', methods=['POST'])

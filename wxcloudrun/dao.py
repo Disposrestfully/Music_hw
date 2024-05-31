@@ -3,11 +3,41 @@ import logging
 from sqlalchemy.exc import OperationalError
 
 from wxcloudrun import db
-from wxcloudrun.model import Counters
+from wxcloudrun.model import Counters, Balls
 
 # 初始化日志
 logger = logging.getLogger('log')
 
+
+def insert_ball(ball):
+    try:
+        db.session.add(ball)
+        db.session.commit()
+    except OperationalError as e:
+        logger.info("insert_ball errorMsg= {} ".format(e))
+
+def query_ballbyname(name):
+    try:
+        return Balls.query.filter(Balls.name == name).first()
+    except OperationalError as e:
+        logger.info("query_ballbyname errorMsg= {} ".format(e))
+        return None
+    
+def update_ballbyname(ball):
+    try:
+        ball = query_ballbyname(ball.name)
+        if ball is None:
+            return
+        db.session.flush()
+        db.session.commit()
+    except OperationalError as e:
+        logger.info("update_counterbyid errorMsg= {} ".format(e))
+
+def get_allballs():
+    balls = []
+    for ball in Balls:
+        balls.append({'name': ball.name, 'renew': ball.renew})
+    return balls
 
 def query_counterbyid(id):
     """
