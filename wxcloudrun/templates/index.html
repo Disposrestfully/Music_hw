@@ -17,15 +17,14 @@
             const textBox = document.getElementById('textbox');
             const text = textBox.value;
 
-            $.ajax("/api/process", {
-                method: "POST",
-                contentType: "application/json; charset=utf-8",
-                dataType: "json",
-                data: JSON.stringify({
-                    name: text,
-                }),
-            }).done(function (res) {
-            });
+            fetch('/api/process', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify({ "text": text })
+            })
+                .catch(error => console.error('Error:', error));
         }
     </script>
 </body>

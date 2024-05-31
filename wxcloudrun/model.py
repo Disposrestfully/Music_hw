@@ -18,4 +18,4 @@ class Counters(db.Model):
 class Balls(db.Model):
     __tablename__ = 'Balls'
     renew = db.Column(db.Integer, primary_key=True)
-    name = db.Column(db.Text)
+    text = db.Column(db.Text, primary_key=True)

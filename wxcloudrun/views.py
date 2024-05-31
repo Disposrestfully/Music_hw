@@ -17,14 +17,14 @@ def index():
 @app.route('/api/process', methods=['POST'])
 def process():
     params = request.get_json()
-    name = params['name']
-    if 'name' not in params:
+    if 'text' not in params:
         return make_err_response('缺少name参数')
-    ball = query_ballbyname(name)
+    text = params['text']
+    ball = query_ballbyname(text)
     if ball is None:
         ball = Balls()
         ball.renew = 0
-        ball.name = name
+        ball.text = text
         insert_ball(ball)
     else:
         ball.renew = 1

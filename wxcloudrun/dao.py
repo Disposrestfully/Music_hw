@@ -18,14 +18,14 @@ def insert_ball(ball):
 
 def query_ballbyname(name):
     try:
-        return Balls.query.filter(Balls.name == name).first()
+        return Balls.query.filter(Balls.text == name).first()
     except OperationalError as e:
         logger.info("query_ballbyname errorMsg= {} ".format(e))
         return None
     
 def update_ballbyname(ball):
     try:
-        ball = query_ballbyname(ball.name)
+        ball = query_ballbyname(ball.text)
         if ball is None:
             return
         db.session.flush()
@@ -36,7 +36,7 @@ def update_ballbyname(ball):
 def get_allballs():
     balls = []
     for ball in Balls:
-        balls.append({'name': ball.name, 'renew': ball.renew})
+        balls.append({'name': ball.text, 'renew': ball.renew})
     return balls
 
 def query_counterbyid(id):
