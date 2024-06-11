@@ -20,6 +20,8 @@ def process():
     if 'text' not in params:
         return make_err_response('缺少name参数')
     text = params['text']
+    if len(text) > 7:
+        return make_err_response('串长不合法')
     ball = query_ballbyname(text)
     if ball is None:
         ball = Balls()
